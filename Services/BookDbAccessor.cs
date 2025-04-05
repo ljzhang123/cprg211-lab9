@@ -36,15 +36,16 @@ namespace Lab9Startup.Services
         {
             connection.Open();
 
-            var sql = @"CREATE TABLE IF NOT EXISTS books (
-                BookId VARCHAR(36) PRIMARY KEY,
-                Title VARCHAR(255) NOT NULL,
-                Author VARCHAR(255) NOT NULL,
-                Description TEXT,
-                Category VARCHAR(255)
-            )";
+            var sqlString = @"CREATE TABLE IF NOT EXISTS books 
+                            (
+                                BookId VARCHAR(36) PRIMARY KEY,
+                                Title VARCHAR(255) NOT NULL,
+                                Author VARCHAR(255) NOT NULL,
+                                Description TEXT,
+                                Category VARCHAR(255)
+                            )";
 
-            connection.Execute(sql);
+            connection.Execute(sqlString);
 
             connection.Close();
         }
@@ -58,9 +59,9 @@ namespace Lab9Startup.Services
 			try
 			{
 				connection.Open();
-				var sql = @"INSERT INTO books (BookId, Title, Author, Description, Category) 
-                            VALUES (@BookId, @Title, @Author, @Description, @Category)";
-				connection.Execute(sql, book);
+				var sqlString = @"INSERT INTO books (BookId, Title, Author, Description, Category) 
+                                  VALUES (@BookId, @Title, @Author, @Description, @Category)";
+				connection.Execute(sqlString, book);
 			}
 			finally
 			{
@@ -77,8 +78,8 @@ namespace Lab9Startup.Services
 			try
 			{
 				connection.Open();
-				var sql = "SELECT * FROM books";
-				var books = connection.Query<Book>(sql).ToList();
+				var sqlString = "SELECT * FROM books";
+				var books = connection.Query<Book>(sqlString).ToList();
 				return books;
 			}
 			finally
@@ -97,8 +98,8 @@ namespace Lab9Startup.Services
 			try
 			{
 				connection.Open();
-				var sql = "SELECT * FROM books WHERE BookId = @BookId";
-				var book = connection.QuerySingleOrDefault<Book>(sql, new { BookId = bookId });
+				var sqlString = "SELECT * FROM books WHERE BookId = @BookId";
+				var book = connection.QuerySingleOrDefault<Book>(sqlString, new { BookId = bookId });
 				return book;
 			}
 			finally
@@ -116,11 +117,11 @@ namespace Lab9Startup.Services
 			try
 			{
 				connection.Open();
-				var sql = @"UPDATE books 
-                            SET Title = @Title, 
-                                Author = @Author, 
-                                Description = @Description, 
-                                Category = @Category
+				var sql = @"UPDATE books SET 
+                            Title = @Title, 
+                            Author = @Author, 
+                            Description = @Description, 
+                            Category = @Category
                             WHERE BookId = @BookId";
 				connection.Execute(sql, book);
 			}
